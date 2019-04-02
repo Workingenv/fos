@@ -23,7 +23,9 @@ CREATE TABLE `items` (
   `name` varchar(20) NOT NULL,
   `price` int(11) NOT NULL,
   `deleted` tinyint(4) NOT NULL DEFAULT '0',
-  `category` varchar(30) NOT NULL
+  `category` varchar(30) NOT NULL,
+  `imagename` varchar(20) NOT NULL DEFAULT 'default.jpg',
+
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
