@@ -202,7 +202,7 @@ include 'includes/connect.php';
         <div class="container">
           <p class="caption">Add, Edit or Remove Menu Items.</p>
           <div class="divider"></div>
-		  <form class="formValidate" id="formValidate" method="post" action="routers/menu-router.php" novalidate="novalidate">
+		  <form class="formValidate" id="formValidate" method="post" action="routers/menu-router.php" novalidate="novalidate" enctype="multipart/form-data">
             <div class="row">
               <div class="col s12 m4 l3">
                 <h4 class="header">Order Food</h4>
@@ -215,6 +215,7 @@ include 'includes/connect.php';
                         <th>Item Price/Piece</th>
                         <th>Available</th>
 						<th>Category</th>
+						<th>Image</th>
                       </tr>
                     </thead>
 
@@ -241,7 +242,11 @@ include 'includes/connect.php';
                       <option value="2"'.$text2.'>Not Available</option>
                     </select></td>';
 					echo '<td><div class="input-field col s12"><label for="'.$row["id"].'_category">Category</label>';
-					echo '<input value="'.$row["category"].'" id="'.$row["id"].'_category" name="'.$row['id'].'_category" type="text" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></td></tr>';
+					echo '<input value="'.$row["category"].'" id="'.$row["id"].'_category" name="'.$row['id'].'_category" type="text" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></td>';
+					
+					echo '<td><div class="input-field col s12 "><label for="'.$row["id"].'_imagename">Image</label>';
+					echo '<img height=50 width=50 class="responsive-img" src="images/food/'.$row["imagename"].'"></img><input id="'.$row["id"].'_imagename" name="'.$row['id'].'_imagename" type="file"><input type="text" value="'.$row["imagename"].'" id="'.$row["id"].'" name="'.$row["id"].'" style="display:none"></td></tr>';
+					
 				}
 				?>
                     </tbody>
@@ -254,7 +259,7 @@ include 'includes/connect.php';
                             </div>
             </div>
 			</form>
-		  <form class="formValidate" id="formValidate1" method="post" action="routers/add-item.php" novalidate="novalidate">
+		  <form class="formValidate" id="formValidate1" method="post" action="routers/add-item.php" novalidate="novalidate" enctype="multipart/form-data">
             <div class="row">
               <div class="col s12 m4 l3">
                 <h4 class="header">Add Item</h4>
@@ -266,6 +271,7 @@ include 'includes/connect.php';
                         <th data-field="id">Name</th>
                         <th data-field="name">Item Price/Piece</th>
 						<th data-field="category">Category</th>
+						<th data-field="imagename">Image</th>
                       </tr>
                     </thead>
 
@@ -277,7 +283,8 @@ include 'includes/connect.php';
 					echo '<input id="price" name="price" type="text" data-error=".errorTxt02"><div class="errorTxt02"></div></td>';   
 					echo '<td><div class="input-field col s12"><label for="category">Category</label>';
 					echo '<input id="category" name="category" type="text" data-error=".errorTxt01"><div class="errorTxt01"></div></td>';
-					echo '<td></tr>';
+					echo '<td><input type="file" name="fileToUpload" id="fileToUpload"></td>';
+					echo '</tr>';
 				?>
                     </tbody>
 </table>
@@ -322,7 +329,6 @@ include 'includes/connect.php';
     <!-- ================================================
     Scripts
     ================================================ -->
-    
     
     <!-- jQuery Library -->
     <script type="text/javascript" src="js/plugins/jquery-1.11.2.min.js"></script>    
