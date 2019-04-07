@@ -215,7 +215,7 @@ $verified = $row['verified'];
               <div class="col s12 m4 l3">
                 <h4 class="header">Details</h4>
               </div>
-<div>
+				<div>
                 <div class="card-panel">
                   <div class="row">
                     <form class="formValidate col s12 m12 l6" id="formValidate" method="post" action="confirm-order.php" novalidate="novalidate">
