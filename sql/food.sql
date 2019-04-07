@@ -24,7 +24,18 @@ CREATE TABLE `items` (
   `price` int(11) NOT NULL,
   `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `category` varchar(30) NOT NULL,
-  `imagename` varchar(20) NOT NULL DEFAULT 'default.jpg',
+  `imagename` varchar(20) NOT NULL DEFAULT 'default.jpg'
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `specialitems` (
+  `id` int(11) NOT NULL,
+  `discription` varchar(160) NOT NULL,
+  `price` int(11) NOT NULL,
+  `deleted` tinyint(4) NOT NULL DEFAULT '0',
+  `category` varchar(20) NOT NULL,
+  `imagename` varchar(20) NOT NULL DEFAULT 'default.jpg'
 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -239,6 +250,12 @@ ALTER TABLE `items`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`),
   ADD UNIQUE KEY `id` (`id`);
+  
+  
+ALTER TABLE `specialitems`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `category` (`category`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `orders`
@@ -304,6 +321,9 @@ ALTER TABLE `wallet_details`
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  
+ALTER TABLE `specialitems`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `orders`
