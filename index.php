@@ -15,6 +15,9 @@ include 'includes/wallet.php';
   <meta name="msapplication-tap-highlight" content="no">
   <title>Order Food</title>
 
+  <!-- Materialize Icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
   <!-- Favicons-->
   <link rel="icon" href="images/favicon/favicon-32x32.png" sizes="32x32">
   <!-- Favicons-->
@@ -75,6 +78,17 @@ include 'includes/wallet.php';
   .right-alert textarea.materialize-textarea + label:after{
       right:70px;
   }
+  
+  
+  
+  .center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+  
   </style> 
 </head>
 
@@ -98,13 +112,38 @@ include 'includes/wallet.php';
                     <ul class="left">                      
                       <li><h1 class="logo-wrapper"><a href="index.php" class="brand-logo darken-1"><img src="images/materialize-logo.png" alt="logo"></a> <span class="logo-text">Logo</span></h1></li>
                     </ul>
-                    <ul class="right hide-on-med-and-down">                        
-                        <li><a href="#" class="waves-effect waves-block waves-light"><i class="mdi-editor-attach-money"><?php echo $balance;?></i></a>
-                        </li>
+                    <ul class="right">                        
+						<li>
+						<div >
+						<!-- Modal Trigger -->
+						<a class="waves-effect waves-light modal-trigger" href="#modal1"><i class="material-icons">shopping_cart</i></a>
+						</div>
+						</li>
                     </ul>					
                 </div>
             </nav>
         </div>
+		 <!-- Modal Structure -->
+						<div id="modal1" class="modal modal-fixed-footer">
+						<div class="modal-content">
+						<h4>Your Items</h4>
+						<ul class="collection">
+						<p id="item_collection">Empty Cart<br></p>
+						<!--<li class="collection-item avatar">
+							<img src="images/avatar.jpg" alt="" class="circle">
+							<span class="title">Name</span>
+							<p>Prize <br>
+							</p>
+							<p style="float:right">Quantity</p>
+							<a href="#!" class="secondary-content"><i class="material-icons">close</i></a>
+						</li>-->
+						</ul>			
+
+						</div>
+						<div class="modal-footer">
+						<a id="total_cart_value" href="#!" class=" modal-action modal-close waves-effect waves-green btn">Ok</a>
+						</div>
+						</div>
         <!-- end header nav-->
   </header>
   <!-- END HEADER -->
@@ -207,17 +246,24 @@ include 'includes/wallet.php';
           <div class="divider"></div>
 		  <form class="formValidate" id="formValidate" method="post" action="place-order.php" novalidate="novalidate">
             <div class="row">
-              <div class="col s12 m4 l3">
+              <div style="float:left" class="col s12 m4 l3">
                 <h4 class="header">Order Food</h4>
               </div>
+			  <div style="float:right">
+			  <div class="input-field col s12">
+                              <button class="btn cyan waves-effect waves-light right" type="submit" name="action">Order
+                                <i class="mdi-content-send right"></i>
+                              </button>
+                            </div>
+            </div>
               <div>
                   <table id="data-table-customer" class="responsive-table display" cellspacing="0">
-                    <thead>
+                    <thead style="display:none">
                       <tr>
                         <th>Name</th>
                         <th>Item Price/Piece</th>
                         <th>Quantity</th>
-						<th>Category</th>
+						
                       </tr>
                     </thead>
 
@@ -226,14 +272,16 @@ include 'includes/wallet.php';
 				$result = mysqli_query($con, "SELECT * FROM items where not deleted;");
 				while($row = mysqli_fetch_array($result))
 				{
-					echo '<tr><td>'.$row["name"].'</td><td>'.$row["price"].'</td>';                      
-					echo '<td><div class="input-field col s12"><label for='.$row["id"].' class="">Quantity</label>';
-					echo '<input id="'.$row["id"].'" name="'.$row['id'].'" type="text" value="0" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></td>';
-					echo '<td>'.$row["category"].'</td></tr>';
+					echo '<tr class="col s4"><td>'.$row["category"].'<br><img id="'.$row['id'].'_image" height=200 width=200 class="responsive-img" src="images/food/'.$row["imagename"].'"></img><br><span id="'.$row['id'].'_name">'.$row["name"].'</span></td><td><span id="'.$row['id'].'_price">'.$row["price"].'</span></td>';                      
+					echo '<td><div id="'.$row["id"].'_add" name="'.$row['id'].'_add" style="cursor: pointer" onClick="updateQuantity(this.id)"><i class="material-icons">add_box</i></div>';
+					echo '<input id="'.$row["id"].'" name="'.$row['id'].'" type="hidden" value="0" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></td></tr>';
 				}
 				?>
                     </tbody>
 				</table>
+				
+				
+				
               </div>
 			  <div class="input-field col s12">
               <i class="mdi-editor-mode-edit prefix"></i>
@@ -302,6 +350,86 @@ include 'includes/wallet.php';
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="js/custom-script.js"></script>
     <script type="text/javascript">
+	try{
+	item_list=[];
+}catch(err){console.log(err.message);}
+
+function updateQuantity(id_str){
+	  var id=id_str.split("_");
+	  var quantity=document.getElementById(id[0]).value;
+	  if(quantity==null||quantity==0||quantity=="")
+		  quantity=1;
+	  else
+		  quantity++;
+	  document.getElementById(id[0]).value=quantity;
+	  alert(quantity)
+	  updateCart(id[0]);
+	  
+  }
+  
+  function updateCart(id){
+	  var image=document.getElementById(String(id)+"_image").src;
+	  var name=document.getElementById(String(id)+"_name").innerHTML;
+	  var price=document.getElementById(String(id)+"_price").innerHTML;
+	  var quantity=document.getElementById(id).value;
+	  var flag=0, i=0;
+	  for(i=0;i<item_list.length;i++){
+		  if(item_list[i][0]==id){
+			  item_list[i][4]++;
+			  item_list[i][5]=item_list[i][3]*item_list[i][4];
+			  flag=1;
+			  break;
+		  }
+	  }
+	  if(flag==0){
+		  item_list[i]=new Array(5);
+		  item_list[i][0]=id;
+		  item_list[i][1]=image;
+		  item_list[i][2]=name;
+		  item_list[i][3]=price;
+		  item_list[i][4]=quantity;
+		  item_list[i][5]=price*quantity;
+	  }
+	  
+	  createCollectionList();
+		  
+  }
+  
+  function createCollectionList(){
+	  var inner_value="";
+	  var total_cart_value=0;
+	  for(var i=0;i<item_list.length;i++){
+		  total_cart_value+=item_list[i][5];
+		  inner_value=inner_value+'<li class="collection-item avatar"><img src="'+item_list[i][1]+'" alt="" class="circle"><span class="title">'+item_list[i][2]+'</span><p>'+item_list[i][5]+'<span class="center">'+item_list[i][4]+'</span></p><a href="#!" class="secondary-content" onClick="removeItem('+item_list[i][0]+')"><i class="material-icons">close</i></a></li>';
+	  }
+	  document.getElementById("item_collection").innerHTML=inner_value;
+	  document.getElementById("total_cart_value").innerHTML=total_cart_value+" Rupee";
+  }
+  
+  function removeItem(id){
+	  for(i=0;i<item_list.length;i++){
+		  if(item_list[i][0]==id){
+			  item_list.splice(i,1);
+			  break;
+		  }
+	  }
+	  document.getElementById(id).value=0;
+	  createCollectionList();
+  }
+	
+	
+	
+	
+	
+	
+	
+	
+  $(document).ready(function(){
+    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+    $('.modal1').leanModal();
+  });
+ 
+  
     $("#formValidate").validate({
         rules: {
 			<?php
