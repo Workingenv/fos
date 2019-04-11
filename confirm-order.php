@@ -82,10 +82,7 @@ if($continue){
                     <ul class="left">                      
                       <li><h1 class="logo-wrapper"><a href="index.php" class="brand-logo darken-1"><img src="images/materialize-logo.png" alt="logo"></a> <span class="logo-text">Logo</span></h1></li>
                     </ul>
-                    <ul class="right hide-on-med-and-down">                        
-                        <li><a href="#" class="waves-effect waves-block waves-light"><i class="mdi-editor-attach-money"><?php echo $balance;?></i></a>
-                        </li>
-                    </ul>					
+                    				
                 </div>
             </nav>
         </div>
@@ -202,7 +199,7 @@ if($continue){
 		<p><strong>Address:</strong> '.htmlspecialchars($_POST['address']).'</p>	
 		<p><strong>Payment Type:</strong> '.$_POST['payment_type'].'</p>			
         <a href="#" class="secondary-content"><i class="mdi-action-grade"></i></a>';
-		
+
 	foreach ($_POST as $key => $value)
 	{
 		if($value == "0"){
@@ -277,7 +274,7 @@ foreach ($_POST as $key => $value)
 <?php if($_POST['payment_type'] == 'Wallet') echo '<input type="hidden" name="balance" value="<?php echo ($balance-$total);?>">'; ?>
 <input type="hidden" name="total" value="<?php echo $total;?>">
 <div class="input-field col s12">
-<button class="btn cyan waves-effect waves-light right" type="submit" name="action" <?php if($_POST['payment_type'] == 'Wallet') {if ($balance-$total < 0) {echo 'disabled'; }}?>>Confirm Order
+<button onclick="removeAlert()" class="btn cyan waves-effect waves-light right" type="submit" name="action" <?php if($_POST['payment_type'] == 'Wallet') {if ($balance-$total < 0) {echo 'disabled'; }}?>>Confirm Order
 <i class="mdi-content-send right"></i>
 </button>
 </div>
@@ -308,9 +305,9 @@ foreach ($_POST as $key => $value)
   <!-- START FOOTER -->
   <footer class="page-footer">
     <div class="footer-copyright">
-      <div class="container">
-        <span>Copyright © 2017 <a class="grey-text text-lighten-4" href="#" target="_blank">Students</a> All rights reserved.</span>
-        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="#">Students</a></span>
+       <div class="container">
+        <span>Copyright © 2019 <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a></span>
         </div>
     </div>
   </footer>
@@ -334,6 +331,16 @@ foreach ($_POST as $key => $value)
     <script type="text/javascript" src="js/plugins.min.js"></script>
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="js/custom-script.js"></script>
+	<script type="text/javascript">
+		// Enable navigation prompt
+window.onbeforeunload = function() {
+    return true;
+};
+// Remove navigation prompt
+function removeAlert(){
+window.onbeforeunload = null;
+}
+</script>
 </body>
 
 </html>

@@ -104,10 +104,7 @@ $verified = $row['verified'];
                     <ul class="left">                      
                       <li><h1 class="logo-wrapper"><a href="index.php" class="brand-logo darken-1"><img src="images/materialize-logo.png" alt="logo"></a> <span class="logo-text">Logo</span></h1></li>
                     </ul>
-                    <ul class="right hide-on-med-and-down">                        
-                        <li><a href="#" class="waves-effect waves-block waves-light"><i class="mdi-editor-attach-money"><?php echo $balance;?></i></a>
-                        </li>
-                    </ul>						
+                    						
                 </div>
             </nav>
         </div>
@@ -255,7 +252,7 @@ $verified = $row['verified'];
                       <div class="row">
                         <div class="row">
                           <div class="input-field col s12">
-                            <button class="btn cyan waves-effect waves-light right" type="submit" name="action">Submit
+                            <button class="btn cyan waves-effect waves-light right" type="submit" name="action" onclick="removeAlert()">Submit
                               <i class="mdi-content-send right"></i>
                             </button>
                           </div>
@@ -265,7 +262,7 @@ $verified = $row['verified'];
 					  	foreach ($_POST as $key => $value)
 						{
 							if($key == 'action' || $value == ''){
-								break;
+								continue;
 							}
 							echo '<input name="'.$key.'" type="hidden" value="'.$value.'">';
 						}
@@ -295,7 +292,7 @@ $verified = $row['verified'];
         <p><strong>Name:</strong>'.$name.'</p>
 		<p><strong>Contact Number:</strong> '.$contact.'</p>
         <a href="#" class="secondary-content"><i class="mdi-action-grade"></i></a>';
-		
+
 	foreach ($_POST as $key => $value)
 	{
 		if($value == "0"){
@@ -369,8 +366,8 @@ $verified = $row['verified'];
   <footer class="page-footer">
     <div class="footer-copyright">
       <div class="container">
-        <span>Copyright © 2017 <a class="grey-text text-lighten-4" href="#" target="_blank">Students</a> All rights reserved.</span>
-        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="#">Students</a></span>
+        <span>Copyright © 2019 <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a></span>
         </div>
     </div>
   </footer>
@@ -398,6 +395,15 @@ $verified = $row['verified'];
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="js/custom-script.js"></script>
 	<script type="text/javascript">
+	// Enable navigation prompt
+window.onbeforeunload = function() {
+    return true;
+};
+// Remove navigation prompt
+function removeAlert(){
+window.onbeforeunload = null;
+}
+	
     $("#formValidate").validate({
         rules: {
             address: {
