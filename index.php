@@ -88,7 +88,33 @@ include 'includes/wallet.php';
   left: 50%;
   transform: translate(-50%, -50%);
 }
-  
+
+.imgclass {
+    height: 100%;
+    width: 100%;
+    max-height: 100vh;
+    max-width: 100vh;
+    object-fit: contain; // this will fill the view window without losing aspect ratio.
+    }
+
+.landscape {
+    height: 100px;
+    width: 100%;
+}
+
+  .cart-badge {
+  position:relative;
+  padding:5px 9px;
+  background-color: #fff;
+  color: #941e1e;
+  bottom: 15px;
+  left: 15px;
+  border-radius: 50%;
+}
+
+.notif{
+  position: absolute;
+}
   </style> 
 </head>
 
@@ -116,7 +142,8 @@ include 'includes/wallet.php';
 						<li>
 						<div >
 						<!-- Modal Trigger -->
-						<a class="waves-effect waves-light modal-trigger" href="#modal1"><i class="material-icons">shopping_cart</i></a>
+						<a class="waves-effect waves-light modal-trigger" href="#modalcart">
+						<i class="material-icons notif">shopping_cart</i><small id="item_count" class="cart-badge">0</small></a>
 						</div>
 						</li>
                     </ul>					
@@ -124,7 +151,7 @@ include 'includes/wallet.php';
             </nav>
         </div>
 		 <!-- Modal Structure -->
-						<div id="modal1" class="modal modal-fixed-footer">
+						<div id="modalcart" class="modal modal-fixed-footer">
 						<div class="modal-content">
 						<h4>Your Items</h4>
 						<ul class="collection">
@@ -227,22 +254,83 @@ include 'includes/wallet.php';
       <!-- START CONTENT -->
       <section id="content">
 
-        <!--breadcrumbs start-->
-        <div id="breadcrumbs-wrapper">
+        <!--offer start-->
           <div class="container">
             <div class="row">
               <div class="col s12 m12 l12">
-                <h5 class="breadcrumbs-title">Order</h5>
+			  <?php
+			  
+						$description=mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM special_items where id=4;"));
+						$result = mysqli_query($con, "SELECT * FROM items where id=4 AND deleted=0;");
+						
+						while($row = mysqli_fetch_assoc($result)) {
+							echo '<h5>Special Offer</h5>';
+							echo '<div class="landscape">';
+							echo ' <!-- Modal Trigger -->
+									<a class="waves-effect waves-light modal-trigger " href="#modaloffer">
+									<img class="imgclass landscape" src="images/food/'.$row["imagename"].'"></a>
+
+									<!-- Modal Structure -->
+									<div id="modaloffer" class="modal modal-fixed-footer">
+									<div class="modal-content">
+									<h4>Special Offer</h4>
+									<p><center class="landscape"><img class="imgclass" src="images/food/'.$row["imagename"].'"></center><div class="divider"></div>
+									<h5>Description</h5>'.$description["description"].'</p>
+									</div>
+									<div class="modal-footer">
+									<a id="'.$description["id"].'_add" class="modal-close waves-effect waves-green btn-flat" onclick="updateQuantity(this.id)">Add To Cart &#x20b9;'.$row["price"].'</a>
+									</div>
+									</div>';
+							
+							echo '</div>';
+						}
+
+				?>
               </div>
             </div>
           </div>
-        </div>
-        <!--breadcrumbs end-->
-
+        <!--offer end-->
+<div class="divider"></div>
 
         <!--start container-->
         <div class="container">
-          <p class="caption">Order your food here.</p>
+          <div class="row">
+		  <div class="col s12 m12 l12">
+			  <?php
+			  
+						$result = mysqli_query($con, "SELECT * FROM items where id<4 AND deleted=0;");
+						echo '<h5>Special Items</h5>';
+						echo '<div class="landscape" style="display:flex;justify-content:center;align-items:center;">';
+						echo ' <!-- Modal Trigger -->
+									<a class="waves-effect waves-light btn modal-trigger" href="#modalspecial">
+									<span>Looking For Breakfast, Lunch or Dinner?</span></a>';
+						echo ' 	<!-- Modal Structure -->
+									<div id="modalspecial" class="modal modal-fixed-footer">
+									<div class="modal-content">
+									<h4>Special Items</h4>';
+									while($row = mysqli_fetch_assoc($result)) {
+										$spid=$row["id"];
+									$description=mysqli_fetch_assoc(mysqli_query($con, "SELECT * FROM special_items where id=$spid;"));
+
+									echo '
+									<p><div style="overflow: auto;">
+									<img style="float:left; padding:5px;" height="150" width="150" src="images/food/'.$row["imagename"].'"><b>'.$row["name"].'</b><br>
+									'.$description["description"].'</div>
+									<b>Price: &#x20b9;'.$row["price"].'</b>
+									<a id="'.$description["id"].'_add" class="btn modal-close waves-effect" onclick="updateQuantity(this.id)">Add</a></p>
+									<div class="divider"></div>';
+									}
+									echo '</div>
+									<div class="modal-footer">
+									</div>
+									</div>';
+							
+							echo '</div>';
+						
+
+				?>
+              </div>
+		  </div>
           <div class="divider"></div>
 		  <form class="formValidate" id="formValidate" method="post" action="place-order.php" novalidate="novalidate">
             <div class="row">
@@ -272,7 +360,7 @@ include 'includes/wallet.php';
 				$result = mysqli_query($con, "SELECT * FROM items where not deleted;");
 				while($row = mysqli_fetch_array($result))
 				{
-					echo '<tr class="col s4"><td>'.$row["category"].'<br><img id="'.$row['id'].'_image" height=200 width=200 class="responsive-img" src="images/food/'.$row["imagename"].'"></img><br><span id="'.$row['id'].'_name">'.$row["name"].'</span></td><td><span id="'.$row['id'].'_price">'.$row["price"].'</span></td>';                      
+					echo '<tr class="col s4"><td><b>'.$row["category"].'</b><br><img id="'.$row['id'].'_image" height=150 width=150 class="responsive-img" src="images/food/'.$row["imagename"].'"></img><br><span id="'.$row['id'].'_name"><b>'.$row["name"].'</b></span></td><td>&#x20b9;<span id="'.$row['id'].'_price">'.$row["price"].'</span></td>';                      
 					echo '<td><div id="'.$row["id"].'_add" name="'.$row['id'].'_add" style="cursor: pointer" onClick="updateQuantity(this.id)"><i class="material-icons">add_box</i></div>';
 					echo '<input id="'.$row["id"].'" name="'.$row['id'].'" type="hidden" value="0" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></td></tr>';
 				}
@@ -316,9 +404,9 @@ include 'includes/wallet.php';
   <!-- START FOOTER -->
   <footer class="page-footer">
     <div class="footer-copyright">
-      <div class="container">
-        <span>Copyright © 2017 <a class="grey-text text-lighten-4" href="#" target="_blank">Students</a> All rights reserved.</span>
-        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="#">Students</a></span>
+       <div class="container">
+        <span>Copyright © 2019 <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a></span>
         </div>
     </div>
   </footer>
@@ -362,7 +450,6 @@ function updateQuantity(id_str){
 	  else
 		  quantity++;
 	  document.getElementById(id[0]).value=quantity;
-	  alert(quantity)
 	  updateCart(id[0]);
 	  
   }
@@ -403,7 +490,8 @@ function updateQuantity(id_str){
 		  inner_value=inner_value+'<li class="collection-item avatar"><img src="'+item_list[i][1]+'" alt="" class="circle"><span class="title">'+item_list[i][2]+'</span><p>'+item_list[i][5]+'<span class="center">'+item_list[i][4]+'</span></p><a href="#!" class="secondary-content" onClick="removeItem('+item_list[i][0]+')"><i class="material-icons">close</i></a></li>';
 	  }
 	  document.getElementById("item_collection").innerHTML=inner_value;
-	  document.getElementById("total_cart_value").innerHTML=total_cart_value+" Rupee";
+	  document.getElementById("total_cart_value").innerHTML=total_cart_value+" &#x20b9;";
+	  document.getElementById("item_count").innerHTML=item_list.length;
   }
   
   function removeItem(id){
