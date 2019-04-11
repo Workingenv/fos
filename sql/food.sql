@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `items` (
   `id` int(11) NOT NULL,
-  `name` varchar(20) NOT NULL,
+  `name` varchar(30) NOT NULL,
   `price` int(11) NOT NULL,
   `deleted` tinyint(4) NOT NULL DEFAULT '0',
   `category` varchar(30) NOT NULL,
@@ -29,26 +29,28 @@ CREATE TABLE `items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-CREATE TABLE `specialitems` (
-  `id` int(11) NOT NULL,
-  `discription` varchar(160) NOT NULL,
-  `price` int(11) NOT NULL,
-  `deleted` tinyint(4) NOT NULL DEFAULT '0',
-  `category` varchar(20) NOT NULL,
-  `imagename` varchar(20) NOT NULL DEFAULT 'default.jpg'
-
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 --
 -- Dumping data for table `items`
 --
 
-/*INSERT INTO `items` (`id`, `name`, `price`, `deleted`) VALUES
-(1, 'Item 1', 25, 1),
-(2, 'Item 2', 45, 0),
-(3, 'Item 3', 20, 0),
-(4, 'Item 4', 15, 1),
-(5, 'Item 5', 20, 0);*/
+INSERT INTO `items` (`id`, `name`, `price`, `deleted`,`category`, `imagename`) VALUES
+(1, 'Breakfast', 40, 0, 'Indian Veg', 'default.jpg'),
+(2, 'Lunch', 80, 0, 'Indian Veg', 'default.jpg'),
+(3, 'Dinner', 100, 0, 'Indian Veg', 'default.jpg'),
+(4, 'Buy 1 Get 1', 100, 0, 'Special Offer', 'default.jpg');
+
+
+CREATE TABLE `special_items` (
+  `id` int(11) NOT NULL,
+  `description` varchar(100) NOT NULL
+
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `special_items` (`id`, `description`) VALUES
+(1,'NONE'),
+(2,'NONE'),
+(3,'NONE'),
+(4,'NONE');
 
 -- --------------------------------------------------------
 
@@ -251,11 +253,8 @@ ALTER TABLE `items`
   ADD UNIQUE KEY `name` (`name`),
   ADD UNIQUE KEY `id` (`id`);
   
-  
-ALTER TABLE `specialitems`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `category` (`category`),
-  ADD UNIQUE KEY `id` (`id`);
+ALTER TABLE `special_items`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `orders`
@@ -322,9 +321,6 @@ ALTER TABLE `wallet_details`
 --
 ALTER TABLE `items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-  
-ALTER TABLE `specialitems`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `orders`
 --
@@ -364,6 +360,9 @@ ALTER TABLE `wallet_details`
 -- Constraints for dumped tables
 --
 
+
+ALTER TABLE `special_items`
+  ADD CONSTRAINT `special_items_ibfk_1` FOREIGN KEY (`id`) REFERENCES `items` (`id`);
 --
 -- Constraints for table `orders`
 --
