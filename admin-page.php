@@ -224,10 +224,10 @@ include 'includes/connect.php';
 				$result = mysqli_query($con, "SELECT * FROM items");
 				while($row = mysqli_fetch_array($result))
 				{
-					echo '<tr><td><div class="input-field col s12"><label for="'.$row["id"].'_name">Name</label>';
-					echo '<input value="'.$row["name"].'" id="'.$row["id"].'_name" name="'.$row['id'].'_name" type="text" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></td>';					
-					echo '<td><div class="input-field col s12 "><label for="'.$row["id"].'_price">Price</label>';
-					echo '<input value="'.$row["price"].'" id="'.$row["id"].'_price" name="'.$row['id'].'_price" type="text" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></td>';                   
+					echo '<tr><td><div class="input-field col s12"><label for="name_'.$row["id"].'">Name</label>';
+					echo '<input value="'.$row["name"].'" id="name_'.$row["id"].'" name="name_'.$row['id'].'" type="text" data-error=".errorTxt'.$row["id"].'_name"><div class="errorTxt'.$row["id"].'_name"></div></td>';					
+					echo '<td><div class="input-field col s12 "><label for="price_'.$row["id"].'">Price</label>';
+					echo '<input value="'.$row["price"].'" id="price_'.$row["id"].'" name="price_'.$row['id'].'" type="text" data-error=".errorTxt'.$row["id"].'_price"><div class="errorTxt'.$row["id"].'_price"></div></td>';                   
 					echo '<td>';
 					if($row['deleted'] == 0){
 						$text1 = 'selected';
@@ -241,8 +241,8 @@ include 'includes/connect.php';
                       <option value="1"'.$text1.'>Available</option>
                       <option value="2"'.$text2.'>Not Available</option>
                     </select></td>';
-					echo '<td><div class="input-field col s12"><label for="'.$row["id"].'_category">Category</label>';
-					echo '<input value="'.$row["category"].'" id="'.$row["id"].'_category" name="'.$row['id'].'_category" type="text" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></td>';
+					echo '<td><div class="input-field col s12"><label for="category_'.$row["id"].'">Category</label>';
+					echo '<input value="'.$row["category"].'" id="category_'.$row["id"].'" name="category_'.$row['id'].'" type="text" data-error=".errorTxt'.$row["id"].'_category"><div class="errorTxt'.$row["id"].'_category"></div></td>';
 					
 					echo '<td><div class="input-field col s12 "><label for="'.$row["id"].'_imagename">Image</label>';
 					echo '<img height=50 width=50 class="responsive-img" src="images/food/'.$row["imagename"].'"></img><input id="'.$row["id"].'_imagename" name="'.$row['id'].'_imagename" type="file"><input type="text" value="'.$row["imagename"].'" id="'.$row["id"].'" name="'.$row["id"].'" style="display:none"></td></tr>';
@@ -282,7 +282,7 @@ include 'includes/connect.php';
 					echo '<td><div class="input-field col s12 "><label for="price" class="">Price</label>';
 					echo '<input id="price" name="price" type="text" data-error=".errorTxt02"><div class="errorTxt02"></div></td>';   
 					echo '<td><div class="input-field col s12"><label for="category">Category</label>';
-					echo '<input id="category" name="category" type="text" data-error=".errorTxt01"><div class="errorTxt01"></div></td>';
+					echo '<input id="category" name="category" type="text" data-error=".errorTxt03"><div class="errorTxt03"></div></td>';
 					echo '<td><input type="file" name="fileToUpload" id="fileToUpload"></td>';
 					echo '</tr>';
 				?>
@@ -295,7 +295,55 @@ include 'includes/connect.php';
                               </button>
                             </div>
             </div>
-			</form>			
+			</form>		
+<div>
+			
+			
+			
+			
+			
+			
+			
+			<form class="formValidate" id="formValidate2" method="post" action="routers/special_menu_router.php" novalidate="novalidate">
+            <div class="row">
+              <div class="col s12 m4 l3">
+                <h4 class="header">Update Special Item Descriptions</h4>
+              </div>
+              <div>
+				<table id="data-table-admin" class="responsive-table display" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Descriptions</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+				<?php
+				$result = mysqli_query($con, "SELECT * FROM special_items");
+				while($row = mysqli_fetch_array($result))
+				{
+					$id=$row["id"];
+					$special_item_name=mysqli_fetch_array(mysqli_query($con, "SELECT name FROM items where id=$id"));
+					echo '<tr><td><div class="input-field col s12"><label>Name</label>';
+					echo '<input disabled value="'.$special_item_name["name"].'" type="text"></td>';					
+					echo '<td><div class="input-field col s12 "><label for="'.$row["id"].'">Descriptions</label>';
+					echo '<input value="'.$row["description"].'" id="description_'.$row["id"].'" name="description_'.$row['id'].'" type="text" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></div></div></td></tr>';                   
+										
+				}
+				?>
+                    </tbody>
+</table>
+              </div>
+			  <div class="input-field col s12">
+                              <button class="btn cyan waves-effect waves-light right" type="submit" name="action">Modify
+                                <i class="mdi-content-send right"></i>
+                              </button>
+                            </div>
+            </div>
+			</form>
+			</div>
+            			
             <div class="divider"></div>
             
           </div>
@@ -316,9 +364,9 @@ include 'includes/connect.php';
   <!-- START FOOTER -->
   <footer class="page-footer">
     <div class="footer-copyright">
-      <div class="container">
-        <span>Copyright © 2017 <a class="grey-text text-lighten-4" href="#" target="_blank">Students</a> All rights reserved.</span>
-        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="#">Students</a></span>
+       <div class="container">
+        <span>Copyright © 2019 <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a> All rights reserved.</span>
+        <span class="right"> Design and Developed by <a class="grey-text text-lighten-4" href="aboutus.php" target="_blank">GO GO FOODS</a></span>
         </div>
     </div>
   </footer>
@@ -349,52 +397,54 @@ include 'includes/connect.php';
     <script type="text/javascript" src="js/plugins.min.js"></script>
     <!--custom-script.js - Add your own theme custom JS-->
     <script type="text/javascript" src="js/custom-script.js"></script>
-	    <script type="text/javascript">
-    $("#formValidate").validate({
+	<script type="text/javascript">
+    $("#formValidate").validate(
+	{
         rules: {
 			<?php
 			$result = mysqli_query($con, "SELECT * FROM items");
 			while($row = mysqli_fetch_array($result))
 			{
-				echo $row["id"].'_name:{
+				echo 'name_'.$row["id"].':{
 				required: true,
-				minlength: 5,
+				minlength: 3,
 				maxlength: 20 
 				},';
-				echo $row["id"].'_price:{
+				echo 'price_'.$row["id"].':{
 				required: true,	
 				min: 0
 				},';	
-				echo $row["id"].'_category:{
+				echo 'category_'.$row["id"].':{
 				required: true,
-				minlength: 5,
+				minlength: 3,
 				maxlength: 30 
 				},';
 			}
 		echo '},';
 		?>
+		
         messages: {
 			<?php
 			$result = mysqli_query($con, "SELECT * FROM items");
 			while($row = mysqli_fetch_array($result))
 			{  
-				echo $row["id"].'_name:{
+				echo 'name_'.$row["id"].':{
 				required: "Enter item name",
-				minlength: "Minimum length is 5 characters",
+				minlength: "Minimum length is 3 characters",
 				maxlength: "Maximum length is 20 characters"
 				},';
-				echo $row["id"].'_price:{
+				echo 'price_'.$row["id"].':{
 				required: "Enter price of item",
 				min: "Minimum item price is Rs. 0"
 				},';		
-				echo $row["id"].'_category:{
+				echo 'category'.$row["id"].':{
 				required: "Enter category",
-				minlength: "Minimum length is 5 characters",
+				minlength: "Minimum length is 3 characters",
 				maxlength: "Maximum length is 30 characters"
 				},';
 			}
-		echo '},';
 		?>
+		},
         errorElement : 'div',
         errorPlacement: function(error, element) {
           var placement = $(element).data('error');
@@ -404,14 +454,15 @@ include 'includes/connect.php';
             error.insertAfter(element);
           }
         }
-     });
+     }
+	 );
     </script>
     <script type="text/javascript">
     $("#formValidate1").validate({
         rules: {
 		name: {
 				required: true,
-				minlength: 5
+				minlength: 3
 			},
 		price: {
 				required: true,
@@ -419,13 +470,13 @@ include 'includes/connect.php';
 			},
 		category: {
 				required: true,
-				minlength: 5
+				minlength: 3
 			},
 	},
         messages: {
 		name: {
 				required: "Enter item name",
-				minlength: "Minimum length is 5 characters"
+				minlength: "Minimum length is 3 characters"
 			},
 		 price: {
 				required: "Enter item price",
@@ -433,7 +484,7 @@ include 'includes/connect.php';
 			},
 		category: {
 				required: "Enter item category",
-				minlength: "Minimum length is 5 characters"
+				minlength: "Minimum length is 3 characters"
 			},
 	},
 		errorElement : 'div',
@@ -446,6 +497,48 @@ include 'includes/connect.php';
           }
         }
      });
+    </script>
+	<script type="text/javascript">
+    $("#formValidate2").validate(
+	{
+        rules: {
+			<?php
+			$result = mysqli_query($con, "SELECT * FROM special_items");
+			while($row = mysqli_fetch_array($result))
+			{
+				echo 'description_'.$row["id"].':{
+				required: true,
+				minlength: 3,
+				maxlength: 100 
+				},';
+			}
+		echo '},';
+		?>
+		
+        messages: {
+			<?php
+			$result = mysqli_query($con, "SELECT * FROM special_items");
+			while($row = mysqli_fetch_array($result))
+			{  
+				echo 'description_'.$row["id"].':{
+				required: "Enter item description",
+				minlength: "Minimum length is 3 characters",
+				maxlength: "Maximum length is 100 characters"
+				},';
+			}
+		?>
+		},
+        errorElement : 'div',
+        errorPlacement: function(error, element) {
+          var placement = $(element).data('error');
+          if (placement) {
+            $(placement).append(error)
+          } else {
+            error.insertAfter(element);
+          }
+        }
+     }
+	 );
     </script>
 </body>
 

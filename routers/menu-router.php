@@ -2,16 +2,18 @@
 include '../includes/connect.php';
 	foreach ($_POST as $key => $value)
 	{
-		if(preg_match("/[0-9]+_name/",$key)){
+		if(preg_match("/name_+[0-9]/",$key)){
 			if($value != ''){
 			$key = strtok($key, '_');
+			$key = strtok('_');
 			$value = htmlspecialchars($value);
 			$sql = "UPDATE items SET name = '$value' WHERE id = $key;";
 			$con->query($sql);
 			}
 		}
-		if(preg_match("/[0-9]+_price/",$key)){
+		if(preg_match("/price_+[0-9]/",$key)){
 			$key = strtok($key, '_');
+			$key = strtok('_');
 			$sql = "UPDATE items SET price = $value WHERE id = $key;";
 			$con->query($sql);
 		}
@@ -26,11 +28,12 @@ include '../includes/connect.php';
 			$con->query($sql);			
 			}
 		}
-		if(preg_match("/[0-9]+_category/",$key)){
+		if(preg_match("/category_+[0-9]/",$key)){
 			if($value != ''){
 			$key = strtok($key, '_');
+			$key = strtok('_');
 			$value = htmlspecialchars($value);
-			$sql = "UPDATE items SET name = '$value' WHERE id = $key;";
+			$sql = "UPDATE items SET category = '$value' WHERE id = $key;";
 			$con->query($sql);
 			}
 		}
