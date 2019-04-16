@@ -4,7 +4,7 @@ include '../includes/connect.php';
 $newfilename="default.jpg";
 $target_dir = "../images/food/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-$uploadOk = 1;
+$uploadOk = 0;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 // Check if image file is a actual image or fake image
 if(isset($_POST["submit"])) {
@@ -24,16 +24,13 @@ if ((($imageFileType == "jpg")
 }
 
 // Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-    echo "Sorry, your file was not uploaded.";
-// if everything is ok, try to upload file
-} else {
+if ($uploadOk == 1) {
+
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 		$filename=$_FILES["fileToUpload"]["name"];
 		$filenamearray=explode(".", $filename,2);
 		$newfilename=time() .".".$filenamearray[1];
 		rename($target_dir.$filename, $target_dir.$newfilename); 
-		echo "<script type='text/javascript'>alert('$newfilename');</script>";
     } else {
         echo "Sorry, there was an error uploading your file.";
     }

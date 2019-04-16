@@ -3,7 +3,10 @@ include '../includes/connect.php';
 include '../includes/wallet.php';
 $total = 0;
 $address = htmlspecialchars($_POST['address']);
+if(isset($_POST['description']))
 $description =  htmlspecialchars($_POST['description']);
+else
+	$description="";
 $payment_type = $_POST['payment_type'];
 $total = $_POST['total'];
 	$sql = "INSERT INTO orders (customer_id, payment_type, address, total, description) VALUES ($user_id, '$payment_type', '$address', $total, '$description')";

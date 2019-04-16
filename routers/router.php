@@ -18,7 +18,7 @@ while($row = mysqli_fetch_array($result))
 if($success == true)
 {	
 	
-	session_start();
+	//session_start();
 	$_SESSION['admin_sid']=session_id();
 	$_SESSION['user_id'] = $user_id;
 	$_SESSION['role'] = $role;
@@ -42,7 +42,7 @@ else
 	if($success == true)
 	{
 		
-		session_start();
+		//session_start();
 		$_SESSION['customer_sid']=session_id();
 		$_SESSION['user_id'] = $user_id;
 		$_SESSION['role'] = $role;
