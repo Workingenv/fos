@@ -6,12 +6,14 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 $result = mysqli_query($con, "SELECT * FROM users WHERE username='$username' AND password='$password' AND role='Administrator' AND not deleted;");
+if($result==TRUE){
 while($row = mysqli_fetch_array($result))
 {
 	$success = true;
 	$user_id = $row['id'];
 	$name = $row['name'];
 	$role= $row['role'];
+}
 }
 if($success == true)
 {	
@@ -27,12 +29,15 @@ if($success == true)
 else
 {
 	$result = mysqli_query($con, "SELECT * FROM users WHERE username='$username' AND password='$password' AND role='Customer' AND not deleted;");
+	if($result==TRUE){
+
 	while($row = mysqli_fetch_array($result))
 	{
 	$success = true;
 	$user_id = $row['id'];
 	$name = $row['name'];
 	$role= $row['role'];
+	}
 	}
 	if($success == true)
 	{
