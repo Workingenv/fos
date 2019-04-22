@@ -485,13 +485,15 @@ function updateQuantity(id_str){
   function createCollectionList(){
 	  var inner_value="";
 	  var total_cart_value=0;
+	  var total_item_count=0;
 	  for(var i=0;i<item_list.length;i++){
 		  total_cart_value+=item_list[i][5];
+		  total_item_count+=parseInt(item_list[i][4]);
 		  inner_value=inner_value+'<li class="collection-item avatar"><img src="'+item_list[i][1]+'" alt="" class="circle"><span class="title">'+item_list[i][2]+'</span><p>'+item_list[i][5]+'<span class="center">'+item_list[i][4]+'</span></p><a href="#!" class="secondary-content" onClick="removeItem('+item_list[i][0]+')"><i class="material-icons">close</i></a></li>';
 	  }
 	  document.getElementById("item_collection").innerHTML=inner_value;
 	  document.getElementById("total_cart_value").innerHTML=total_cart_value+" &#x20b9;";
-	  document.getElementById("item_count").innerHTML=item_list.length;
+	  document.getElementById("item_count").innerHTML=total_item_count;
   }
   
   function removeItem(id){
