@@ -360,9 +360,25 @@ include 'includes/wallet.php';
 				$result = mysqli_query($con, "SELECT * FROM items where not deleted;");
 				while($row = mysqli_fetch_array($result))
 				{
-					echo '<tr class="col s4"><td><b>'.$row["category"].'</b><br><img id="'.$row['id'].'_image" height=150 width=150 class="responsive-img" src="images/food/'.$row["imagename"].'"></img><br><span id="'.$row['id'].'_name"><b>'.$row["name"].'</b></span></td><td>&#x20b9;<span id="'.$row['id'].'_price">'.$row["price"].'</span></td>';                      
-					echo '<td><div id="'.$row["id"].'_add" name="'.$row['id'].'_add" style="cursor: pointer" onClick="updateQuantity(this.id)"><i class="material-icons">add_box</i></div>';
-					echo '<input id="'.$row["id"].'" name="'.$row['id'].'" type="hidden" value="0" data-error=".errorTxt'.$row["id"].'"><div class="errorTxt'.$row["id"].'"></td></tr>';
+					echo '<tr class="col s4">
+							<td>
+								<b>'.$row["category"].'</b><br>
+								<div style="width:150px; height:150px;">
+									<img id="'.$row['id'].'_image"  class="responsive-img" src="images/food/'.$row["imagename"].'"></img>
+								</div>
+								<br>
+								<span id="'.$row['id'].'_name"><b>'.$row["name"].'</b></span>
+							</td>
+							<td>
+								&#x20b9;<span id="'.$row['id'].'_price">'.$row["price"].'</span>
+							</td>';                      
+					echo '<td>
+							<div id="'.$row["id"].'_add" name="'.$row['id'].'_add" style="cursor: pointer" onClick="updateQuantity(this.id)"><i class="material-icons">add_box</i>
+							</div>';
+						echo '<input id="'.$row["id"].'" name="'.$row['id'].'" type="hidden" value="0" data-error=".errorTxt'.$row["id"].'">
+							<div class="errorTxt'.$row["id"].'">
+							</td>
+						</tr>';
 				}
 				?>
                     </tbody>
