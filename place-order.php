@@ -221,7 +221,7 @@ $verified = $row['verified'];
 							<label for="payment_type">Payment Type</label><br><br>
 							<select id="payment_type" name="payment_type">
 									<option value="Wallet" disabled>Wallet</option>
-									<option value="Cash On Delivery" selected>Cash on Delivery</option>							
+									<option value="Pay With Paytm" selected>Pay With Paytm</option>							
 							</select>
                         </div>
                       </div>					
